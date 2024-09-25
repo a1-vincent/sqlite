@@ -78,7 +78,7 @@ def insert_users_into_db(users):
                        user['nationality'], 
                        user['active'], 
                        user['github_username']) for user in users])
-    conn.commit()
+
     conn.close()
 
 init_db()
