@@ -110,5 +110,35 @@ def get_members():
     conn.close()
     return jsonify(members_list), 200
 
+
+@app.route('/api/members/<int:member_id>', methods=['GET'])
+def get_member(member_id):
+    conn = sqlite3.connect('members.db')
+    c = conn.cursor()
+    c.execute('SELECT * FROM members WHERE id = ?', (member_id,))
+
+    member = c.fetchone()
+    conn.close()
+
+    if member is None:
+        return jsonify({"error": "Member not found"}), 404
+    
+    member_data = {
+         'id': member[0],
+            'first_name': member[1], 
+            'last_name': member[2], 
+            'birth_date': member[3], 
+            'gender': member[4], 
+            'email': member[5], 
+            'phonenumber': member[6], 
+            'address': member[7], 
+            'nationality': member[8], 
+            'active': member[9], 
+            'github_username': member[10]
+    }
+
+    return jsonify(member_data),200
+
+
 if __name__ == '__main__':
     app.run(debug=True)
